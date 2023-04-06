@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731713, g: 0.13414736, b: 0.121078536, a: 1}
+  m_IndirectSpecularColor: {r: 0.12735139, g: 0.13419023, b: 0.12115462, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -572,7 +572,7 @@ GameObject:
   - component: {fileID: 862724128}
   - component: {fileID: 862724127}
   m_Layer: 0
-  m_Name: Entities
+  m_Name: Blockers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -639,7 +639,7 @@ TilemapRenderer:
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
-  m_Mode: 0
+  m_Mode: 1
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
 --- !u!1839735485 &862724128
@@ -991,6 +991,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1681340806}
   - component: {fileID: 1681340805}
+  - component: {fileID: 1681340810}
   - component: {fileID: 1681340808}
   - component: {fileID: 1681340807}
   - component: {fileID: 1681340809}
@@ -1023,9 +1024,16 @@ MonoBehaviour:
     tilemap: {fileID: 862724128}
   ruleTile: {fileID: 11400000, guid: 2760db388268249bf8b5950bdb079a91, type: 2}
   background: {fileID: 252975088}
-  darkTiles: []
-  lightTiles: []
-  field: {fileID: 0}
+  darkTiles:
+  - {fileID: 11400000, guid: c1d168abbf6774c71afb15e08d95355a, type: 2}
+  - {fileID: 11400000, guid: a95e5305809824bb4adf66bb257c6372, type: 2}
+  - {fileID: 11400000, guid: 8bbab1e05d09648d08de6483565379d2, type: 2}
+  lightTiles:
+  - {fileID: 11400000, guid: d2ddf3cfa7fb142e69995ea6a5577927, type: 2}
+  - {fileID: 11400000, guid: c225fa83696284156833e15c62347bf8, type: 2}
+  - {fileID: 11400000, guid: 7282bb02dedf0480286c4b33cd7f9d15, type: 2}
+  exitPrefab: {fileID: 2275664268671978960, guid: f5507853149d34610b8ce61da34b5f4d, type: 3}
+  field: {fileID: 465482314}
   entities: {fileID: 862724128}
 --- !u!4 &1681340806
 Transform:
@@ -1081,6 +1089,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvas: {fileID: 1312940351}
   startButton: {fileID: 1835066244}
+--- !u!114 &1681340810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1681340804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04787284316243d181c07364e79cd765, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerPrefab: {fileID: 88012301408051033, guid: 09f027c3f59f249e28d061ac18c7ed7f, type: 3}
 --- !u!1 &1796851458
 GameObject:
   m_ObjectHideFlags: 0

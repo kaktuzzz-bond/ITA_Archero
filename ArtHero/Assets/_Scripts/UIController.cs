@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class UIController : Singleton<UIController>
 {
-        public Action OnStartButtonClicked;
+        public Action onStartButtonClicked;
 
         [SerializeField]
         private Canvas canvas;
@@ -21,6 +21,6 @@ public class UIController : Singleton<UIController>
         {
                 
                 canvas.gameObject.SetActive(false);
-                OnStartButtonClicked?.Invoke();
+                onStartButtonClicked?.Invoke();
         }
 }

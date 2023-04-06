@@ -14,21 +14,21 @@ public class CameraController : Singleton<CameraController>
         _camera = Camera.main;
     }
 
-    public void SetPosition(Vector2 position)
+    private void SetPosition(Vector3 origin, int width, int height)
     {
-        _camera.transform.position = new Vector3(position.x, position.y, OffsetZ);
+        _camera.transform.position = new Vector3(width * 0.5f, height *0.5f, OffsetZ) + origin;
     }
     
     #region - Enable / Disable -
 
     private void OnEnable()
     {
-        Battlefield.Instance.OnMapGenerated += SetPosition;
+        Battlefield.Instance.onMapGenerated += SetPosition;
     }
 
     private void OnDisable()
     {
-        Battlefield.Instance.OnMapGenerated += SetPosition;
+        Battlefield.Instance.onMapGenerated += SetPosition;
     }
 
     #endregion

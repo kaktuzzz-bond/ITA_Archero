@@ -15,12 +15,12 @@ public class GameController : Singleton<GameController>
 
     private void OnEnable()
     {
-        UIController.Instance.OnStartButtonClicked += StartGame;
+        UIController.Instance.onStartButtonClicked += StartGame;
     }
 
     private void OnDisable()
     {
-        UIController.Instance.OnStartButtonClicked -= StartGame;
+        UIController.Instance.onStartButtonClicked -= StartGame;
     }
 
     #endregion

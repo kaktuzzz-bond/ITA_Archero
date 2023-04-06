@@ -2,10 +2,11 @@ using System;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Random = UnityEngine.Random;
 
 public class Battlefield : Singleton<Battlefield>
 {
-    public Action<Vector2> OnMapGenerated;
+    public Action<Vector3, int, int> onMapGenerated;
 
     [Foldout("Mapping")]
     public Texture2D levelMap;
@@ -26,6 +27,9 @@ public class Battlefield : Singleton<Battlefield>
     private Tile[] lightTiles;
 
     [Foldout("Field"), SerializeField]
+    private Transform exitPrefab;
+
+    [Foldout("Field"), SerializeField]
     private Tilemap field;
 
     [Foldout("Roots"), SerializeField]
@@ -35,29 +39,67 @@ public class Battlefield : Singleton<Battlefield>
     {
         for (int x = -1; x <= levelMap.width; x++)
         {
-            for (int y = -1; y <= levelMap.height; y++)
+            for (int y = levelMap.height - 1; y >= -1; y--)
             {
                 DrawBackgroundTileIn(x, y);
-
-                if (x >= 0 &&
-                    y >= 0 &&
-                    x < levelMap.width &&
-                    y < levelMap.height)
+                
+                if (x < 0 || y < 0 ||
+                    x >= levelMap.width ||
+                    y >= levelMap.height)
                 {
-                    GeneratePrefabs(x, y);
+                    continue;
                 }
+
+                DrawFieldTileIn(x, y);
+                GeneratePrefabs(x, y);
             }
         }
 
-        Vector2 camPos = new((float)levelMap.width / 2f, (float)levelMap.height / 2f);
-        
-        OnMapGenerated?.Invoke(camPos);
+        SetupExitPortal(Vector3.zero, levelMap.width, levelMap.height);
+
+        onMapGenerated?.Invoke(Vector3.zero, levelMap.width, levelMap.height);
+    }
+
+    
+    
+    
+    
+    private void SetupExitPortal(Vector3 origin, int width, int height)
+    {
+        Vector3 position = origin + new Vector3(width * 0.5f, height + 1f, 0f);
+
+        Instantiate(exitPrefab, position, Quaternion.identity, transform);
     }
 
     private void DrawBackgroundTileIn(int x, int y)
     {
         Vector3Int position = new(x, y);
         background.SetTile(position, ruleTile);
+    }
+
+    private void DrawFieldTileIn(int x, int y)
+    {
+        Tile tile;
+
+        Vector3Int position = new(x, y);
+
+        if ((y & 1) == 0)
+        {
+            tile = (x & 1) == 0 ? GetRandomFrom(darkTiles) : GetRandomFrom(lightTiles);
+        }
+        else
+        {
+            tile = (x & 1) == 0 ? GetRandomFrom(lightTiles) : GetRandomFrom(darkTiles);
+        }
+
+        field.SetTile(position, tile);
+    }
+
+    private Tile GetRandomFrom(Tile[] tiles)
+    {
+        int i = Random.Range(0, tiles.Length);
+
+        return tiles[i];
     }
 
     private void GeneratePrefabs(int x, int y)
