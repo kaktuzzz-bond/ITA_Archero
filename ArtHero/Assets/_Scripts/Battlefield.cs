@@ -39,13 +39,13 @@ public class Battlefield : Singleton<Battlefield>
     {
         for (int x = -1; x <= levelMap.width; x++)
         {
-            for (int y = levelMap.height - 1; y >= -1; y--)
+            for (int y = levelMap.height; y >= -1; y--)
             {
                 DrawBackgroundTileIn(x, y);
                 
                 if (x < 0 || y < 0 ||
-                    x >= levelMap.width ||
-                    y >= levelMap.height)
+                    x == levelMap.width ||
+                    y == levelMap.height)
                 {
                     continue;
                 }
