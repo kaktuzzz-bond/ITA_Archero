@@ -4,23 +4,23 @@ using UnityEngine.UI;
 
 public class UIController : Singleton<UIController>
 {
-        public Action onStartButtonClicked;
+    public Action onStartButtonClicked;
 
-        [SerializeField]
-        private Canvas canvas;
+    [SerializeField]
+    private Canvas canvas;
 
-        [SerializeField]
-        private Button startButton;
+    [SerializeField]
+    private Button startButton;
 
-        private void Awake()
-        {
-                startButton.onClick.AddListener(StartGame);
-        }
+    private void Awake()
+    {
+        startButton.onClick.AddListener(StartGame);
+        canvas.gameObject.SetActive(true);
+    }
 
-        private void StartGame()
-        {
-                
-                canvas.gameObject.SetActive(false);
-                onStartButtonClicked?.Invoke();
-        }
+    private void StartGame()
+    {
+        canvas.gameObject.SetActive(false);
+        onStartButtonClicked?.Invoke();
+    }
 }
