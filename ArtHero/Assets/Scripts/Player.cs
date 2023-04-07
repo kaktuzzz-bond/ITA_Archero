@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
         {
             float rotation = Vector2.SignedAngle(Vector2.up, move);
             rb.rotation = rotation;
-            Debug.Log(rotation);
+            //Debug.Log(rotation);
         }
     }
 }
