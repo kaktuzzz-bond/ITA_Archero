@@ -6,6 +6,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float rotationSpeed;
     private Rigidbody2D rb;
     private Controls controls;
+    public bool canMove;
+    public GameObject target;
 
     private void OnEnable()
     {
@@ -13,19 +15,54 @@ public class Player : MonoBehaviour
         controls.Enable();
 
         rb = GetComponent<Rigidbody2D>();
+
+        canMove = true;
     }
 
-    private void Update()
+    private void FixedUpdate()
+    {
+        if (canMove)
+        {
+            Vector2 move = controls.Player.Move.ReadValue<Vector2>();
+            rb.velocity = move * speed * Time.fixedDeltaTime;
+
+            if (move != Vector2.zero)
+            {
+                float rotation = Vector2.SignedAngle(Vector2.up, move);
+                rb.rotation = rotation;
+                Debug.Log(rotation);
+            }
+            else
+            {
+                Aim();
+                Shoot();
+            }
+        }
+        
+    }
+
+    public void Aim()
     {
 
-        Vector2 move = controls.Player.Move.ReadValue<Vector2>() * speed;
-        rb.velocity = move * speed;
+    }
 
-        if (move != Vector2.zero)
-        {
-            float rotation = Vector2.SignedAngle(Vector2.up, move);
-            rb.rotation = rotation;
-            //Debug.Log(rotation);
-        }
+    public void Shoot()
+    {
+
+    }
+
+    public void CantMove(float time)
+    {
+        canMove = false;
+    }
+
+    public void Death()
+    {
+        controls.Disable();
+    }
+
+    public void OnDisable()
+    {
+        controls.Disable();
     }
 }
