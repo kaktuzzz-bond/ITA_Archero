@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class GameController : Singleton<GameController>
 {
+    
     private void StartGame()
     {
         Battlefield.Instance.GenerateMap();
