@@ -114,7 +114,7 @@ public class Battlefield : Singleton<Battlefield>
             {
                 Vector3 position = new(x, y, 0);
 
-                position += entities.GetComponent<Tilemap>().tileAnchor;
+                position += entities.tileAnchor;
 
                 Transform parent = colorMapping.tilemap.transform;
 
