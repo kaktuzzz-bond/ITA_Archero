@@ -1,4 +1,5 @@
 using System;
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,21 +7,26 @@ public class UIController : Singleton<UIController>
 {
     public Action onStartButtonClicked;
 
-    [SerializeField]
-    private Canvas canvas;
+    [Foldout("Canvases"), SerializeField]
+    private Canvas uiCanvas;
 
-    [SerializeField]
+    [Foldout("Canvases"), SerializeField]
     private Button startButton;
+
+    [Foldout("Canvases"), SerializeField]
+    private Canvas gameCanvas;
 
     private void Awake()
     {
         startButton.onClick.AddListener(StartGame);
-        canvas.gameObject.SetActive(true);
+        uiCanvas.gameObject.SetActive(true);
+        gameCanvas.gameObject.SetActive(false);
     }
 
     private void StartGame()
     {
-        canvas.gameObject.SetActive(false);
+        uiCanvas.gameObject.SetActive(false);
+        gameCanvas.gameObject.SetActive(true);
         onStartButtonClicked?.Invoke();
     }
 }

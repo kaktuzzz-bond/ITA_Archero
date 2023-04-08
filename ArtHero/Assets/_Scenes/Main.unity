@@ -853,7 +853,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 10.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1062,7 +1062,7 @@ GameObject:
   - component: {fileID: 1312940350}
   - component: {fileID: 1312940349}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: gui_Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1316,8 +1316,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24f56a3bda464a38a3c940bf0ead6fe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 1312940351}
+  uiCanvas: {fileID: 1312940351}
   startButton: {fileID: 1835066244}
+  gameCanvas: {fileID: 1724326505}
 --- !u!114 &1681340810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1344,12 +1345,12 @@ GameObject:
   - component: {fileID: 1724326504}
   - component: {fileID: 1724326503}
   m_Layer: 5
-  m_Name: Game_Canvas
+  m_Name: game_Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1724326503
 MonoBehaviour:
   m_ObjectHideFlags: 0
