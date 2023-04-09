@@ -1,5 +1,5 @@
-using System;
 using System.Collections;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,34 +11,28 @@ public class PlayerController : MonoBehaviour
 
     [Tooltip("An interval between shots in seconds")]
     [SerializeField] private float shootingInterval;
-    
-    //на попозже:
-    //здесь будем хранить атрибуты игрока - его усиления и эффекты
-    //private int attributes = 0;
-    //тут его уровень здоровья будет
-    //public int Health{get; private set;}
-    
-    private Controls controls;
 
-    private Rigidbody2D rb;
+    [SerializeField] private SpriteRenderer shootingIndicator;
+
+    private WaitForSecondsRealtime _shootingWait;
+
+    private readonly WaitForSeconds _indicatorWait = new(0.1f);
+
+    private Controls _controls;
+
+    private Rigidbody2D _rb;
 
     //awake - это аналог шарпового конструктора; поэтому все инициализации лучше делать в этом методе
     private void Awake()
     {
-        controls = new Controls();
-        rb = GetComponent<Rigidbody2D>();
-    }
-
-    //при старте запускаем рутину стрельбы
-    private void Start()
-    {
-        StartCoroutine(ShootRoutine());
+        _controls = new Controls();
+        _rb = GetComponent<Rigidbody2D>();
+        _shootingWait = new WaitForSecondsRealtime(shootingInterval);
     }
 
     //при инпуте игрока запускаем этот метод, который в свою очередь запускает рутину движения
     private void Move(InputAction.CallbackContext context)
     {
-        Debug.Log("Start Moving");
         StartCoroutine(MoveRoutine(context));
     }
 
@@ -46,39 +40,32 @@ public class PlayerController : MonoBehaviour
     private IEnumerator MoveRoutine(InputAction.CallbackContext context)
     {
         //останавливаем рутину стрельбы
-        StopCoroutine(ShootRoutine());
+        StopCoroutine(ShootRoutine(context));
 
-        //пока значение вектора не нулевое - персонаж движется.
-        //вместо sqrMagnitude можно использовать Vector2.zero.
-        //Надо спросить у Артема как это с точки зрения производительности
-        while (context.ReadValue<Vector2>().sqrMagnitude != 0)
+        while (context.ReadValue<Vector2>() != Vector2.zero)
         {
             Vector3 direction = context.ReadValue<Vector2>();
 
             float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
 
-            transform.rotation = Quaternion.AngleAxis(angle, Vector3.back);
+            _rb.SetRotation(Quaternion.AngleAxis(angle, Vector3.back));
 
-            transform.position += direction * (speed * Time.deltaTime);
+            _rb.MovePosition(transform.position + direction * (speed * Time.deltaTime));
 
             yield return null;
         }
 
-        //возобновляем рутину стрельбы
-        StartCoroutine(ShootRoutine());
+        StartCoroutine(ShootRoutine(context));
     }
 
     //рутина стрельбы
-    private IEnumerator ShootRoutine()
+    private IEnumerator ShootRoutine(InputAction.CallbackContext context)
     {
-        Debug.Log("Start Shooting");
-
-        //здесь тоже можно рассмотреть замену на Vector2.zero
-        while (controls.Player.Move.ReadValue<Vector2>().sqrMagnitude == 0)
+        while (context.ReadValue<Vector2>() == Vector2.zero)
         {
             MakeShot();
 
-            yield return new WaitForSeconds(shootingInterval);
+            yield return _shootingWait;
         }
     }
 
@@ -86,21 +73,33 @@ public class PlayerController : MonoBehaviour
     {
         //здесь нужно будет дописать логику - если задетектили врага - стреляем
         //если нет - стоим спокойно
+
         Debug.Log("Shot");
+
+        StartCoroutine(IndicatorRoutine());
+    }
+
+    private IEnumerator IndicatorRoutine()
+    {
+        shootingIndicator.color = Color.red;
+
+        yield return _indicatorWait;
+
+        shootingIndicator.color = Color.green;
     }
 
     #region - Enable / Disable -
 
     private void OnEnable()
     {
-        controls.Enable();
-        controls.Player.Move.started += Move;
+        _controls.Enable();
+        _controls.Player.Move.started += Move;
     }
 
     private void OnDisable()
     {
-        controls.Player.Move.started -= Move;
-        controls.Disable();
+        _controls.Player.Move.started -= Move;
+        _controls.Disable();
     }
 
     #endregion

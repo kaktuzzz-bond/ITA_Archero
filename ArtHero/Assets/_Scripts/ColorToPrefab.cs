@@ -7,6 +7,4 @@ public class ColorToPrefab
     public Color color;
 
     public Transform prefab;
-
-    public Tilemap tilemap;
 }

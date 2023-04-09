@@ -1,15 +1,19 @@
 using System;
 using NaughtyAttributes;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
 
 public class Battlefield : Singleton<Battlefield>
 {
-    public Action<Vector3, int, int> onMapGenerated;
+    public event Action<Vector3, int, int> OnMapGenerated;
 
     [Foldout("Mapping")]
-    public Texture2D levelMap;
+    public MapCard map;
+
+    [Foldout("Mapping")]
+    public Transform entityParent;
 
     [Foldout("Mapping")]
     public ColorToPrefab[] colorMappings;
@@ -30,79 +34,43 @@ public class Battlefield : Singleton<Battlefield>
     private Transform exitPrefab;
 
     [Foldout("Field"), SerializeField]
-    private Tilemap field;
+    public Tilemap field;
 
     [Foldout("Roots"), SerializeField]
     private Tilemap entities;
 
     public void GenerateMap()
     {
-        for (int x = -1; x <= levelMap.width; x++)
-        {
-            for (int y = levelMap.height; y >= -1; y--)
-            {
-                DrawBackgroundTileIn(x, y);
-                
-                if (x < 0 || y < 0 ||
-                    x == levelMap.width ||
-                    y == levelMap.height)
-                {
-                    continue;
-                }
+        Vector2Int mapSize = GetCheckedMapSize();
 
-                DrawFieldTileIn(x, y);
-                GeneratePrefabs(x, y);
+        for (int x = -1; x <= mapSize.x; x++)
+        {
+            for (int y = mapSize.y; y >= -1; y--)
+            {
+                //draws background
+                background.SetTile(new Vector3Int(x, y), ruleTile);
+
+                if (x < 0 || y < 0 || x == mapSize.x || y == mapSize.y) continue;
+
+                field.SetTile(new Vector3Int(x, y), GetFieldTile(x, y));
+
+                //draws collider
+                DrawFieldEdges(mapSize);
+
+                //generates blockers
+                GeneratePrefabs(x, y, map.blockers);
+
+                //generates enemies
+                GeneratePrefabs(x, y, map.enemies);
             }
         }
 
-        SetupExitPortal(Vector3.zero, levelMap.width, levelMap.height);
+        SetupExitPortal(Vector3.zero, mapSize.x, mapSize.y);
 
-        onMapGenerated?.Invoke(Vector3.zero, levelMap.width, levelMap.height);
+        OnMapGenerated?.Invoke(Vector3.zero, mapSize.x, mapSize.y);
     }
 
-    
-    
-    
-    
-    private void SetupExitPortal(Vector3 origin, int width, int height)
-    {
-        Vector3 position = origin + new Vector3(width * 0.5f, height + 1f, 0f);
-
-        Instantiate(exitPrefab, position, Quaternion.identity, transform);
-    }
-
-    private void DrawBackgroundTileIn(int x, int y)
-    {
-        Vector3Int position = new(x, y);
-        background.SetTile(position, ruleTile);
-    }
-
-    private void DrawFieldTileIn(int x, int y)
-    {
-        Tile tile;
-
-        Vector3Int position = new(x, y);
-
-        if ((y & 1) == 0)
-        {
-            tile = (x & 1) == 0 ? GetRandomFrom(darkTiles) : GetRandomFrom(lightTiles);
-        }
-        else
-        {
-            tile = (x & 1) == 0 ? GetRandomFrom(lightTiles) : GetRandomFrom(darkTiles);
-        }
-
-        field.SetTile(position, tile);
-    }
-
-    private Tile GetRandomFrom(Tile[] tiles)
-    {
-        int i = Random.Range(0, tiles.Length);
-
-        return tiles[i];
-    }
-
-    private void GeneratePrefabs(int x, int y)
+    private void GeneratePrefabs(int x, int y, Texture2D levelMap)
     {
         Color pixelColor = levelMap.GetPixel(x, y);
 
@@ -114,12 +82,64 @@ public class Battlefield : Singleton<Battlefield>
             {
                 Vector3 position = new(x, y, 0);
 
-                position += entities.tileAnchor;
+                position += field.tileAnchor;
 
-                Transform parent = colorMapping.tilemap.transform;
-
-                Instantiate(colorMapping.prefab, position, Quaternion.identity, parent);
+                Instantiate(colorMapping.prefab, position, Quaternion.identity, entityParent);
             }
         }
+    }
+
+    private void DrawFieldEdges(Vector2Int size)
+    {
+        EdgeCollider2D edge = field.AddComponent<EdgeCollider2D>();
+
+        edge.points = new[]
+        {
+                new Vector2(size.x / 2f + 1, size.y),
+                new Vector2(size.x, size.y),
+                new Vector2(size.x, 0),
+                Vector2.zero,
+                new Vector2(0, size.y),
+                new Vector2(size.x / 2f - 1, size.y)
+        };
+    }
+
+    private Vector2Int GetCheckedMapSize()
+    {
+        if (map == null) throw new NullReferenceException("Map is null");
+
+        if (map.blockers == null || map.enemies == null)
+            throw new NullReferenceException("Map textures are null");
+
+        if (map.blockers.width != map.enemies.width ||
+            map.blockers.height != map.enemies.height)
+            throw new Exception("The size of the map textures is not equal");
+
+        return new Vector2Int(map.blockers.width, map.blockers.height);
+    }
+
+    private void SetupExitPortal(Vector3 origin, int width, int height)
+    {
+        Vector3 position = origin + new Vector3(width * 0.5f, height + 1f, 0f);
+
+        Instantiate(exitPrefab, position, Quaternion.identity, transform);
+    }
+
+    private Tile GetFieldTile(int x, int y)
+    {
+        Tile GetRandomFrom(Tile[] t) => t[Random.Range(0, t.Length)];
+
+        Tile tile;
+
+        if ((y & 1) == 0)
+        {
+            tile = (x & 1) == 0 ? GetRandomFrom(darkTiles) : GetRandomFrom(lightTiles);
+        }
+        else
+        {
+            tile = (x & 1) == 0 ? GetRandomFrom(lightTiles) : GetRandomFrom(darkTiles);
+        }
+
+        return tile;
     }
 }
