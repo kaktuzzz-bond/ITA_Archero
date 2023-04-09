@@ -47,7 +47,7 @@ public class CameraController : Singleton<CameraController>
 
     private void SetOrthographicSize(Vector3 origin, int width, int height)
     {
-        float boundSize = Battlefield.Instance.field.cellSize.x * width + 0.5f;
+        float boundSize = Battlefield.Instance.field.cellSize.x * width + 1f;
 
         _camera.orthographicSize = boundSize * Screen.height / Screen.width * 0.5f;
 
