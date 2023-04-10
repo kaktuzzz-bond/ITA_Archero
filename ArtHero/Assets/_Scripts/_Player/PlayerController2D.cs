@@ -1,10 +1,9 @@
 using System.Collections;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class PlayerController : MonoBehaviour
+public class PlayerController2D : MonoBehaviour
 {
     [Tooltip("Player's movement speed")]
     [SerializeField] private float speed;
@@ -16,13 +15,12 @@ public class PlayerController : MonoBehaviour
 
     private WaitForSecondsRealtime _shootingWait;
 
-    private readonly WaitForSeconds _indicatorWait = new(0.1f);
+    private readonly WaitForSecondsRealtime _indicatorWait = new(0.1f);
 
     private Controls _controls;
 
     private Rigidbody2D _rb;
 
-    //awake - это аналог шарпового конструктора; поэтому все инициализации лучше делать в этом методе
     private void Awake()
     {
         _controls = new Controls();
@@ -30,18 +28,13 @@ public class PlayerController : MonoBehaviour
         _shootingWait = new WaitForSecondsRealtime(shootingInterval);
     }
 
-    //при инпуте игрока запускаем этот метод, который в свою очередь запускает рутину движения
     private void Move(InputAction.CallbackContext context)
     {
         StartCoroutine(MoveRoutine(context));
     }
 
-    //рутина движения работает в цикле - null означает, что обновление происмходит в каждом апдейте
     private IEnumerator MoveRoutine(InputAction.CallbackContext context)
     {
-        //останавливаем рутину стрельбы
-        StopCoroutine(ShootRoutine(context));
-
         while (context.ReadValue<Vector2>() != Vector2.zero)
         {
             Vector3 direction = context.ReadValue<Vector2>();
@@ -54,11 +47,13 @@ public class PlayerController : MonoBehaviour
 
             yield return null;
         }
+    }
 
+    private void Shooting(InputAction.CallbackContext context)
+    {
         StartCoroutine(ShootRoutine(context));
     }
 
-    //рутина стрельбы
     private IEnumerator ShootRoutine(InputAction.CallbackContext context)
     {
         while (context.ReadValue<Vector2>() == Vector2.zero)
@@ -94,11 +89,13 @@ public class PlayerController : MonoBehaviour
     {
         _controls.Enable();
         _controls.Player.Move.started += Move;
+        _controls.Player.Move.canceled += Shooting;
     }
 
     private void OnDisable()
     {
         _controls.Player.Move.started -= Move;
+        _controls.Player.Move.canceled -= Shooting;
         _controls.Disable();
     }
 
