@@ -54,25 +54,24 @@ public class CameraController : Singleton<CameraController>
         _exitPointY = height - _camera.orthographicSize;
 
         Vector3 pointPos = _camera.transform.position;
+
         pointPos.y = _exitPointY;
+
         pointPos.z = 0;
-        Debug.Log(pointPos);
-       
-        Debug.DrawRay(pointPos, Vector3.right * 10, Color.red);
     }
 
-    #region - Enable / Disable -
+    #region ENABLE / DISABLE
 
     private void OnEnable()
     {
-        PlayerManager.Instance.OnPlayerCreatedEvent += SetTarget;
-        Battlefield.Instance.OnMapGenerated += SetOrthographicSize;
+        Observer.Instance.OnPlayerCreated += SetTarget;
+        Observer.Instance.OnMapGenerated += SetOrthographicSize;
     }
 
     private void OnDisable()
     {
-        PlayerManager.Instance.OnPlayerCreatedEvent -= SetTarget;
-        Battlefield.Instance.OnMapGenerated -= SetOrthographicSize;
+        Observer.Instance.OnPlayerCreated -= SetTarget;
+        Observer.Instance.OnMapGenerated -= SetOrthographicSize;
     }
 
     #endregion

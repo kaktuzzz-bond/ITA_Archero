@@ -7,22 +7,32 @@ using UnityEngine;
 public class GameController : Singleton<GameController>
 {
     
+    private void Start()
+    {
+        Observer.Instance.OnApplicationLaunchedNotify();
+    }
+
+    
     private void StartGame()
     {
         Battlefield.Instance.GenerateMap();
     }
-
-    #region - Enable / Disable -
+    
+    
+    
+    #region ENABLE / DISABLE
 
     private void OnEnable()
     {
-        UIController.Instance.onStartButtonClicked += StartGame;
+        Observer.Instance.OnStartButtonClick += StartGame;
     }
 
     private void OnDisable()
     {
-        UIController.Instance.onStartButtonClicked -= StartGame;
+        Observer.Instance.OnStartButtonClick -= StartGame;
     }
 
     #endregion
+
+  
 }
