@@ -10,6 +10,8 @@ public class WeaponCard : ScriptableObject
 
     public float damage;
 
+    public float reloadTime;
+
     public int hitTimes; //при контакте с противником летит насквозь
 
     public bool flyOverObstacles;
