@@ -7,8 +7,6 @@ using Random = UnityEngine.Random;
 
 public class Battlefield : Singleton<Battlefield>
 {
-    public event Action<Vector3, int, int> OnMapGenerated;
-
     [Foldout("Mapping")]
     public MapCard map;
 
@@ -55,7 +53,7 @@ public class Battlefield : Singleton<Battlefield>
                 field.SetTile(new Vector3Int(x, y), GetFieldTile(x, y));
 
                 //draws collider
-                DrawFieldEdges(mapSize);
+                DrawFieldEdges(Vector3.zero, mapSize.x, mapSize.y);
 
                 //generates blockers
                 GeneratePrefabs(x, y, map.blockers);
@@ -67,7 +65,7 @@ public class Battlefield : Singleton<Battlefield>
 
         SetupExitPortal(Vector3.zero, mapSize.x, mapSize.y);
 
-        OnMapGenerated?.Invoke(Vector3.zero, mapSize.x, mapSize.y);
+        Observer.Instance.OnMapGeneratedNotify(Vector3.zero, mapSize.x, mapSize.y);
     }
 
     private void GeneratePrefabs(int x, int y, Texture2D levelMap)
@@ -89,18 +87,17 @@ public class Battlefield : Singleton<Battlefield>
         }
     }
 
-    private void DrawFieldEdges(Vector2Int size)
+    private void DrawFieldEdges(Vector3 origin, int width, int height)
     {
         EdgeCollider2D edge = field.AddComponent<EdgeCollider2D>();
 
         edge.points = new[]
         {
-                new Vector2(size.x / 2f + 1, size.y),
-                new Vector2(size.x, size.y),
-                new Vector2(size.x, 0),
-                Vector2.zero,
-                new Vector2(0, size.y),
-                new Vector2(size.x / 2f - 1, size.y)
+                new Vector2(origin.x, origin.y),
+                new Vector2(origin.x, origin.y + height),
+                new Vector2(origin.x + width, origin.y + height),
+                new Vector2(origin.x + width, origin.y),
+                new Vector2(origin.x, origin.y)
         };
     }
 

@@ -8,23 +8,17 @@ public class PlayerController3D : MonoBehaviour
 {
     [SerializeField] private float speed;
 
-    [SerializeField] private Transform rotator;
-
-    [SerializeField] private Transform model;
-
     [SerializeField] private float shootingInterval;
 
-    [SerializeField] private SpriteRenderer shootingIndicator;
-
-    private WaitForSecondsRealtime _shootingWait;
-
-    private readonly WaitForSecondsRealtime _indicatorWait = new(0.1f);
+    [SerializeField] private Transform model;
 
     private Controls _controls;
 
     private Rigidbody2D _rb;
 
     private Animator _animator;
+
+    #region ANIMATIONS
 
     private static readonly int Move = Animator.StringToHash("Move");
 
@@ -34,12 +28,15 @@ public class PlayerController3D : MonoBehaviour
 
     private static readonly int Death = Animator.StringToHash("Death");
 
+    #endregion
+
     private void Awake()
     {
         _controls = new Controls();
+
         _rb = GetComponent<Rigidbody2D>();
-        _shootingWait = new WaitForSecondsRealtime(shootingInterval);
-        _animator = GetComponentInChildren<Animator>();
+
+        _animator = model.GetComponentInChildren<Animator>();
     }
 
     private void Start()
@@ -50,6 +47,8 @@ public class PlayerController3D : MonoBehaviour
     private void Moving(InputAction.CallbackContext context)
     {
         _animator.SetTrigger(Move);
+
+        StopAllCoroutines();
 
         StartCoroutine(MoveRoutine(context));
     }
@@ -62,11 +61,9 @@ public class PlayerController3D : MonoBehaviour
 
             float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
 
-            rotator.rotation = Quaternion.AngleAxis(angle, Vector3.back);
+            model.rotation = Quaternion.AngleAxis(angle, Vector3.back);
 
-            model.rotation = rotator.rotation;
-
-            //_rb.SetRotation(Quaternion.AngleAxis(angle, Vector3.back));
+            // _rb.SetRotation(Quaternion.AngleAxis(angle, Vector3.back));
 
             _rb.MovePosition(transform.position + direction * (speed * Time.deltaTime));
 
@@ -78,6 +75,8 @@ public class PlayerController3D : MonoBehaviour
     {
         _animator.SetTrigger(Stop);
 
+        StopAllCoroutines();
+
         StartCoroutine(ShootRoutine());
     }
 
@@ -85,11 +84,13 @@ public class PlayerController3D : MonoBehaviour
     {
         InputAction move = _controls.Player.Move;
 
+        WaitForSeconds wait = new(shootingInterval);
+
         while (move.ReadValue<Vector2>() == Vector2.zero)
         {
             MakeShot();
 
-            yield return _shootingWait;
+            yield return wait;
         }
     }
 
@@ -102,7 +103,7 @@ public class PlayerController3D : MonoBehaviour
     {
         _animator.SetTrigger(Death);
     }
-    
+
     #region - Enable / Disable -
 
     private void OnEnable()
