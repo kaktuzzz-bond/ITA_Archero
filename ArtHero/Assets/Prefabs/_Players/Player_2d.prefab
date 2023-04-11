@@ -133,6 +133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 20
+  weaponCard: {fileID: 11400000, guid: c56b59e9da2f385498bf6c6ec43fc7ff, type: 2}
   shootingInterval: 2
   shootingIndicator: {fileID: 2559879754910085047}
 --- !u!50 &6236558199692431415

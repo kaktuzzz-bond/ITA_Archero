@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Weapon", menuName = "ArcHero/Weapon")]
-public class WeaponCard : ScriptableObject
+public class WeaponCard : ScriptableObject, IWeapon
 {
     public Transform weaponPrefab;
 
@@ -10,25 +10,24 @@ public class WeaponCard : ScriptableObject
 
     public float damage;
 
-    public float reloadTime;
+    //public Vector3[] fraction;
 
-    public int hitTimes; //при контакте с противником летит насквозь
+    //[Header("Weapon Sound")]
+    //public Transform onlaunchVFXPrefab;
 
-    public bool flyOverObstacles;
+    //public AudioClip onRicochetVFXPrefab;
 
-    public Vector3[] fraction; //если только один, ставим Vector3.forward
+    //public AudioClip onHitVFXPrefab;
 
-    [Header("Weapon Sound")]
-    public Transform onlaunchVFXPrefab;
+    //[Header("Weapon Sound")]
+    //public AudioClip onLaunchSound;
 
-    public AudioClip onRicochetVFXPrefab;
+    //public AudioClip onRicochetSound;
 
-    public AudioClip onHitVFXPrefab;
+    //public AudioClip onHitSound;
 
-    [Header("Weapon Sound")]
-    public AudioClip onLaunchSound;
-
-    public AudioClip onRicochetSound;
-
-    public AudioClip onHitSound;
+    public void Shoot(Transform shooter)
+    {
+        Instantiate(weaponPrefab, shooter.transform.position, shooter.transform.rotation);
+    }
 }

@@ -8,6 +8,9 @@ public class PlayerController2D : MonoBehaviour
     [Tooltip("Player's movement speed")]
     [SerializeField] private float speed;
 
+    [Tooltip("Player's weapon")]
+    [SerializeField] private WeaponCard weaponCard;
+
     [Tooltip("An interval between shots in seconds")]
     [SerializeField] private float shootingInterval;
 
@@ -20,6 +23,7 @@ public class PlayerController2D : MonoBehaviour
     private Controls _controls;
 
     private Rigidbody2D _rb;
+
 
     private void Awake()
     {
@@ -68,6 +72,8 @@ public class PlayerController2D : MonoBehaviour
     {
         //здесь нужно будет дописать логику - если задетектили врага - стреляем
         //если нет - стоим спокойно
+
+        weaponCard.Shoot(this.transform); //только стрельба
 
         Debug.Log("Shot");
 
