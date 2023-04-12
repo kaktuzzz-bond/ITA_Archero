@@ -18,6 +18,8 @@ public class PlayerController3D : MonoBehaviour
 
     private Animator _animator;
 
+    [SerializeField] private WeaponCard weaponCard;
+
     #region ANIMATIONS
 
     private static readonly int Move = Animator.StringToHash("Move");
@@ -97,6 +99,7 @@ public class PlayerController3D : MonoBehaviour
     private void MakeShot()
     {
         _animator.SetTrigger(Shoot);
+        weaponCard.Shoot(this.transform, model.rotation);
     }
 
     private void Die()

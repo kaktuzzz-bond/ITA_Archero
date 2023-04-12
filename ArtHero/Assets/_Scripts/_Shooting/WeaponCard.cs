@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.Mathematics;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Weapon", menuName = "ArcHero/Weapon")]
 public class WeaponCard : ScriptableObject, IWeapon
@@ -26,8 +27,10 @@ public class WeaponCard : ScriptableObject, IWeapon
 
     //public AudioClip onHitSound;
 
-    public void Shoot(Transform shooter)
+    public void Shoot(Transform shooter, Quaternion direction)
     {
-        Instantiate(weaponPrefab, shooter.transform.position, shooter.transform.rotation);
+        Transform prefab = PoolManager.Instance.Pool(weaponPrefab.ToString(), shooter.transform.position, shooter.transform.rotation);
+        prefab.rotation = direction;
+        //Instantiate(weaponPrefab, shooter.transform.position, shooter.transform.rotation);
     }
 }

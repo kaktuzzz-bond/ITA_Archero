@@ -73,7 +73,7 @@ public class PlayerController2D : MonoBehaviour
         //здесь нужно будет дописать логику - если задетектили врага - стреляем
         //если нет - стоим спокойно
 
-        weaponCard.Shoot(this.transform); //только стрельба
+        //weaponCard.Shoot(this.transform); //это только стрельба
 
         Debug.Log("Shot");
 
