@@ -32,6 +32,9 @@ public class Battlefield : Singleton<Battlefield>
     private Transform exitPrefab;
 
     [Foldout("Field"), SerializeField]
+    private Transform cloudPrefab;
+
+    [Foldout("Field"), SerializeField]
     public Tilemap field;
 
     [Foldout("Roots"), SerializeField]
@@ -64,6 +67,8 @@ public class Battlefield : Singleton<Battlefield>
         }
 
         SetupExitPortal(Vector3.zero, mapSize.x, mapSize.y);
+
+        SetupCloud(Vector3.zero, mapSize.x, mapSize.y);
 
         Observer.Instance.OnMapGeneratedNotify(Vector3.zero, mapSize.x, mapSize.y);
     }
@@ -120,6 +125,13 @@ public class Battlefield : Singleton<Battlefield>
         Vector3 position = origin + new Vector3(width * 0.5f, height + 1f, 0f);
 
         Instantiate(exitPrefab, position, Quaternion.identity, transform);
+    }
+
+    private void SetupCloud(Vector3 origin, int width, int height)
+    {
+        Vector3 position = origin + new Vector3(width * 0.5f, 0, 0);
+
+        Instantiate(cloudPrefab, position, Quaternion.identity, transform);
     }
 
     private Tile GetFieldTile(int x, int y)
