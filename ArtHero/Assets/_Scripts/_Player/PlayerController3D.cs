@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -99,7 +100,22 @@ public class PlayerController3D : MonoBehaviour
     private void MakeShot()
     {
         _animator.SetTrigger(Shoot);
+        
+        Aim();
+
         weaponCard.Shoot(this.transform, model.rotation);
+    }
+
+
+
+    public void Aim()
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, weaponCard.distance, 1 << LayerMask.NameToLayer("Enemy"));
+
+        foreach (var collider in colliders)
+        {
+            Debug.Log($"{collider.gameObject.name} is nearby");
+        }
     }
 
     private void Die()

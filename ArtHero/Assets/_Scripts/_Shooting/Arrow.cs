@@ -11,4 +11,13 @@ public class Arrow : MonoBehaviour
     {
         GetComponent<Rigidbody2D>().velocity = transform.up.normalized * speed;
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Field")
+        {
+            PoolManager.Instance.Push(this.gameObject.transform);
+        }
+    }
+
 }

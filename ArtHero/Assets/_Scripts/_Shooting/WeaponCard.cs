@@ -11,6 +11,8 @@ public class WeaponCard : ScriptableObject, IWeapon
 
     public float damage;
 
+    public float distance;
+
     //public Vector3[] fraction;
 
     //[Header("Weapon Sound")]
