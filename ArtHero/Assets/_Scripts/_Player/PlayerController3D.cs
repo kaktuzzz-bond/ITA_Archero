@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -17,6 +18,8 @@ public class PlayerController3D : MonoBehaviour
     private Rigidbody2D _rb;
 
     private Animator _animator;
+
+    [SerializeField] private WeaponCard weaponCard;
 
     #region ANIMATIONS
 
@@ -99,6 +102,20 @@ public class PlayerController3D : MonoBehaviour
     private void MakeShot()
     {
         _animator.SetTrigger(Shoot);
+
+        var target = Aiming.Aim(_rb, weaponCard, 1 << LayerMask.NameToLayer("Enemy"));
+
+        if (target != null)
+        {
+            float angle = Vector2.Angle(_rb.position, new Vector2(target.position.x, target.position.y));
+
+            Debug.Log("_rb.position " + _rb.position);
+            Debug.Log("target.position " + target.position);
+            model.rotation = Quaternion.AngleAxis(angle, Vector3.back);
+            Debug.Log("angle " + angle);
+        }
+
+        weaponCard.Shoot(this.transform, model.rotation);
     }
 
     private void Die()
