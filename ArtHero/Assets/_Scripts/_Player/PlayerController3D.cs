@@ -100,22 +100,20 @@ public class PlayerController3D : MonoBehaviour
     private void MakeShot()
     {
         _animator.SetTrigger(Shoot);
-        
-        Aim();
+
+        var target = Aiming.Aim(_rb, weaponCard, 1 << LayerMask.NameToLayer("Enemy"));
+
+        if (target != null)
+        {
+            float angle = Vector2.Angle(_rb.position, new Vector2(target.position.x, target.position.y));
+
+            Debug.Log("_rb.position " + _rb.position);
+            Debug.Log("target.position " + target.position);
+            model.rotation = Quaternion.AngleAxis(angle, Vector3.back);
+            Debug.Log("angle " + angle);
+        }
 
         weaponCard.Shoot(this.transform, model.rotation);
-    }
-
-
-
-    public void Aim()
-    {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, weaponCard.distance, 1 << LayerMask.NameToLayer("Enemy"));
-
-        foreach (var collider in colliders)
-        {
-            Debug.Log($"{collider.gameObject.name} is nearby");
-        }
     }
 
     private void Die()

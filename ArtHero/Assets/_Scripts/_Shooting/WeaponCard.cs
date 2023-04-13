@@ -31,8 +31,7 @@ public class WeaponCard : ScriptableObject, IWeapon
 
     public void Shoot(Transform shooter, Quaternion direction)
     {
-        Transform prefab = PoolManager.Instance.Pool(weaponPrefab.ToString(), shooter.transform.position, shooter.transform.rotation);
-        prefab.rotation = direction;
-        //Instantiate(weaponPrefab, shooter.transform.position, shooter.transform.rotation);
+        Transform prefab = PoolManager.Instance.Pool(weaponPrefab.ToString(), shooter.transform.position, direction);
+        //Transform prefab = Instantiate(weaponPrefab, shooter.transform.position, shooter.transform.rotation);
     }
 }
