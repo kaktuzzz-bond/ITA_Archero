@@ -19,9 +19,9 @@ public class Progressbar : MonoBehaviour
         _maxProgressbarWidth = progressbar.size.x;
     }
     
-    public void UpdateProgressbar(int healthPoints)
+    public void UpdateProgressbar(int healthPoints, int maxValue)
     {
-        float scaledValue = Mathf.InverseLerp(0, PlayerManager.Instance.MaxPlayerHealth, healthPoints);
+        float scaledValue = Mathf.InverseLerp(0, maxValue, healthPoints);
         progressbar.size = new Vector2(_maxProgressbarWidth * scaledValue, 1f);
         healthValue.text = healthPoints.ToString();
     }

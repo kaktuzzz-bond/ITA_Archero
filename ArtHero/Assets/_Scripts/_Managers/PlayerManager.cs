@@ -10,7 +10,7 @@ public class PlayerManager : Singleton<PlayerManager>
     
     public int MaxPlayerHealth { get; private set; } = 100;
 
-    private Action<int> _healthValueChangedCallback;
+    private Action<int, int> _healthValueChangedCallback;
 
     private Progressbar _progressbar;
 
@@ -28,7 +28,7 @@ public class PlayerManager : Singleton<PlayerManager>
         {
             _currentHealth = value;
 
-            _healthValueChangedCallback.Invoke(_currentHealth);
+            _healthValueChangedCallback.Invoke(_currentHealth, MaxPlayerHealth);
         }
     }
 

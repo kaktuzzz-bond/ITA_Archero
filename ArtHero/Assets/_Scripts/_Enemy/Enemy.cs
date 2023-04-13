@@ -9,7 +9,9 @@ public abstract class Enemy : MonoBehaviour
     
     [SerializeField] private SpriteRenderer pointerSprite;
     
-    private int _health;
+    private int _maxHealth;
+    
+    private int _currentHealth;
 
     private int _damage;
 
@@ -51,11 +53,13 @@ public abstract class Enemy : MonoBehaviour
 
     private void InitializeInstance()
     {
-        _health = card.health;
+        _maxHealth = card.health;
         _damage = card.damage;
         _attackDistance = card.attackDistance;
         
-        progressbar.UpdateProgressbar(_health);
+        _currentHealth = _maxHealth;
+        
+        progressbar.UpdateProgressbar(_currentHealth, _maxHealth);
     }
 
     #region ENABLE / DISABLE
