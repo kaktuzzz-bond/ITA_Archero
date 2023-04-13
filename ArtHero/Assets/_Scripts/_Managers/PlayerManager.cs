@@ -14,7 +14,7 @@ public class PlayerManager : Singleton<PlayerManager>
 
     private Progressbar _progressbar;
 
-    private Transform _player;
+    public Transform Player { get; private set; }
 
     private int _startHealth;
 
@@ -55,20 +55,18 @@ public class PlayerManager : Singleton<PlayerManager>
     {
         Vector3 position = origin + new Vector3(width * 0.5f, 0.5f, 0);
 
-        _player = Instantiate(playerPrefab, position, Quaternion.identity, transform);
+        Player = Instantiate(playerPrefab, position, Quaternion.identity, transform);
 
-        _progressbar = _player.GetComponentInChildren<Progressbar>();
+        _progressbar = Player.GetComponentInChildren<Progressbar>();
 
         if (_progressbar == null)
             Debug.LogError("Progressbar is not found");
 
         _healthValueChangedCallback += _progressbar.UpdateProgressbar;
 
-        _healthValueChangedCallback += _progressbar.UpdateText;
-
         Health = _startHealth;
 
-        Observer.Instance.OnPlayerCreatedNotify(_player);
+        Observer.Instance.OnPlayerCreatedNotify(Player);
     }
 
     #region ENABLE / DISABLE

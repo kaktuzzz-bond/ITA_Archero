@@ -40,6 +40,7 @@ public class Battlefield : Singleton<Battlefield>
     [Foldout("Roots"), SerializeField]
     private Tilemap entities;
 
+    
     public void GenerateMap()
     {
         Vector2Int mapSize = GetCheckedMapSize();

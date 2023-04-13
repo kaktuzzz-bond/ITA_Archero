@@ -67,6 +67,8 @@ public class PlayerController3D : MonoBehaviour
 
             _rb.MovePosition(transform.position + direction * (speed * Time.deltaTime));
 
+            Observer.Instance.OnPlayerPositionChangedNotify();
+
             yield return null;
         }
     }
