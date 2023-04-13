@@ -11,10 +11,12 @@ public class Observer : Singleton<Observer>
 
     public event Action OnStartButtonClick;
 
+    public event Action OnPlayerPositionChanged;
     public event MapGeneratedCallback OnMapGenerated;
 
     public event PlayerCreatedCallback OnPlayerCreated;
 
+    
     public void OnMapGeneratedNotify(Vector3 origin, int width, int height)
     {
         OnMapGenerated?.Invoke(origin, width, height);
@@ -33,5 +35,10 @@ public class Observer : Singleton<Observer>
     public void OnApplicationLaunchedNotify()
     {
         OnApplicationLaunched?.Invoke();
+    }
+
+    public void OnPlayerPositionChangedNotify()
+    {
+        OnPlayerPositionChanged?.Invoke();
     }
 }

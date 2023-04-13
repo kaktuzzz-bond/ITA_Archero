@@ -9,9 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93b8439462514ade9c4b1c7fb552c3cf, type: 3}
-  m_Name: 00_test
+  m_Script: {fileID: 11500000, guid: e0c9235af2a14fb994ac4e9e4a3be493, type: 3}
+  m_Name: Fly
   m_EditorClassIdentifier: 
-  ID: Test
-  blockers: {fileID: 2800000, guid: 724a413d0125d459480bfd0c492d05f4, type: 3}
-  enemies: {fileID: 2800000, guid: 997750b61ea364c50b98e32b515e69ac, type: 3}
+  id: Fly
+  health: 100
+  damage: 5
+  attackDistance: 3
