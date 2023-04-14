@@ -53,6 +53,8 @@ public abstract class Enemy : MonoBehaviour
 
     private void InitializeInstance()
     {
+        EnemyManager.Instance.Add(this);
+        
         _maxHealth = card.health;
         _damage = card.damage;
         _attackDistance = card.attackDistance;

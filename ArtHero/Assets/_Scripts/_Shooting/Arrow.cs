@@ -1,25 +1,47 @@
-﻿using Unity.Mathematics;
-using Unity.VisualScripting;
+﻿using System;
+using System.Collections;
 using UnityEngine;
-using UnityEngine.SocialPlatforms;
 
-[RequireComponent(typeof(Rigidbody2D))]
-public class Arrow : MonoBehaviour
+
+public class Arrow : Weapon
 {
-    public float speed;
-
-    private void OnEnable()
+    private Vector3 _startPoint;
+   
+    public override void Shoot(Vector3 direction)
     {
-        GetComponent<Rigidbody2D>().velocity = transform.up.normalized * speed;
+        _startPoint = transform.position;
+        
+        Activate();
+
+        StartCoroutine(MoveRoutine(direction));
+       
     }
+    
+    // private void OnTriggerEnter2D(Collider2D collision)
+    // {
+    //     Debug.Log("Arrow collision: damage -" + card.damage);
+    //
+    //     PlayerManager.Instance.ReleaseWeapon(card);
+    //     
+    //     //Destroy(gameObject);
+    //
+    //     // if (collision.gameObject.CompareTag("Field"))
+    //     // {
+    //     //     Destroy(this.gameObject);
+    //     //
+    //     //     //PoolManager.Instance.Push(this.gameObject.transform);
+    //     // }
+    // }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private IEnumerator MoveRoutine(Vector3 direction)
     {
-        if (collision.gameObject.tag == "Field")
-        {            
-            //Destroy(this.gameObject);
-            PoolManager.Instance.Push(this.gameObject.transform);
+        while (Vector3.Distance(transform.position, _startPoint) < card.distance)
+        {
+            Rigidbody.MovePosition(transform.position + direction * (card.speed * Time.deltaTime));
+            
+            yield return null;
         }
+        
+        PlayerManager.Instance.ReleaseWeapon(this);
     }
-
 }

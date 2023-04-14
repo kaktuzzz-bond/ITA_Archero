@@ -19,8 +19,6 @@ public class PlayerController3D : MonoBehaviour
 
     private Animator _animator;
 
-    [SerializeField] private WeaponCard weaponCard;
-
     #region ANIMATIONS
 
     private static readonly int Move = Animator.StringToHash("Move");
@@ -103,19 +101,12 @@ public class PlayerController3D : MonoBehaviour
     {
         _animator.SetTrigger(Shoot);
 
-        var target = Aiming.Aim(_rb, weaponCard, 1 << LayerMask.NameToLayer("Enemy"));
+       PlayerManager.Instance.GetWeapon()
+               .SetPosition(transform.position)
+               .SetRotation(transform.rotation)
+               .Shoot(Vector3.up);
 
-        if (target != null)
-        {
-            float angle = Vector2.Angle(_rb.position, new Vector2(target.position.x, target.position.y));
-
-            Debug.Log("_rb.position " + _rb.position);
-            Debug.Log("target.position " + target.position);
-            model.rotation = Quaternion.AngleAxis(angle, Vector3.back);
-            Debug.Log("angle " + angle);
-        }
-
-        weaponCard.Shoot(this.transform, model.rotation);
+       // должен просто бросить предмет из определенного пула
     }
 
     private void Die()
