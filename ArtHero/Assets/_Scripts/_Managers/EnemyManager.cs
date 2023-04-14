@@ -5,28 +5,33 @@ using UnityEngine;
 
 public class EnemyManager : Singleton<EnemyManager>
 {
-    public List<Enemy> _alive;
+    public List<Enemy> Alive { get; private set; }
 
     private List<Enemy> _dead;
 
-    public Enemy Nearest => _alive
+    public Enemy Nearest => Alive
             .OrderBy((enemy) => Vector3.Distance(enemy.transform.position, PlayerManager.Instance.Player.position))
             .FirstOrDefault();
-
+    
     public void Add(Enemy enemy)
     {
-        _alive ??= new List<Enemy>();
+        Alive ??= new List<Enemy>();
 
-        _alive.Add(enemy);
+        Alive.Add(enemy);
     }
 
     public void Remove(Enemy enemy)
     {
-        _alive.Remove(enemy);
+        enemy.gameObject.SetActive(false);
+        
+        Alive.Remove(enemy);
 
         _dead ??= new List<Enemy>();
 
+        
         _dead.Add(enemy);
+        
+        
     }
 
 

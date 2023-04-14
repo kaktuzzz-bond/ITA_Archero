@@ -8,26 +8,23 @@ public class WeaponCard : ScriptableObject
     public Transform weaponPrefab;
 
     public string id = "ID";
-    
+
     [Header("Weapon Setup")]
     public float speed;
 
-    public float damage;
+    public int damage;
 
     public float distance;
 
-
-    public Weapon GetWeapon()
-    {
-        if (weaponPrefab.TryGetComponent(out Weapon weapon))
-        {
-            return weapon;
-        }
-
-        Debug.LogError("Prefab doesn't have Weapon Component");
-
-        return null;
-    }
-    
-    
+    // public Weapon GetWeapon()
+    // {
+    //     if (weaponPrefab.TryGetComponent(out Weapon weapon))
+    //     {
+    //         return weapon;
+    //     }
+    //
+    //     Debug.LogError("Prefab doesn't have Weapon Component");
+    //
+    //     return null;
+    // }
 }

@@ -37,9 +37,9 @@ public abstract class Enemy : Creature
         Debug.Log($"Attack: -{damage}");
     }
 
-    public virtual void Die()
+    public override void Die()
     {
-        Observer.Instance.OnCreatureDieNotify(this);
+        Debug.LogWarning("EnemyDie");
     }
 
     private void CheckPlayerPosition()
@@ -58,8 +58,6 @@ public abstract class Enemy : Creature
 
         _damage = card.damage;
         _attackDistance = card.attackDistance;
-
-        //progressbar.UpdateProgressbar(_currentHealth, _maxHealth);
     }
 
     #region ENABLE / DISABLE

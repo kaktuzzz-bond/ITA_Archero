@@ -6,19 +6,24 @@ public abstract class Creature : MonoBehaviour
     [Header("Creature Options")]
     [SerializeField]
     private Progressbar progressbar;
-    
+
     private int _maxHealth;
-    
+
     private int _currentHealth;
 
-    protected int CurrentHealth
+    private int CurrentHealth
     {
         get => _currentHealth;
 
-        private set
+        set
         {
             _currentHealth = Mathf.Clamp(value, 0, _maxHealth);
-            
+
+            if (_currentHealth <= 0)
+            {
+                Observer.Instance.OnCreatureDieNotify((Enemy)this);
+            }
+
             progressbar.UpdateValues(_currentHealth, _maxHealth);
         }
     }
@@ -28,4 +33,11 @@ public abstract class Creature : MonoBehaviour
         _maxHealth = maxHealth;
         CurrentHealth = healthOnStart;
     }
+
+    public virtual void Hit(int damage)
+    {
+        CurrentHealth -= damage;
+    }
+
+    public abstract void Die();
 }

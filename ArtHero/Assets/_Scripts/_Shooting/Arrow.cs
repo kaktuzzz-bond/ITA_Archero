@@ -6,10 +6,10 @@ using UnityEngine;
 public class Arrow : Weapon
 {
     private Vector3 _startPoint;
-   
     public override void Shoot(Vector3 direction)
     {
         _startPoint = transform.position;
+        
         
         Activate();
 
@@ -17,8 +17,13 @@ public class Arrow : Weapon
        
     }
     
+    
+    
     // private void OnTriggerEnter2D(Collider2D collision)
     // {
+    //     
+    //     if(collision.)
+    //     
     //     Debug.Log("Arrow collision: damage -" + card.damage);
     //
     //     PlayerManager.Instance.ReleaseWeapon(card);

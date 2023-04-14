@@ -88,7 +88,8 @@ public class PlayerController3D : Creature
 
         WaitForSeconds wait = new(shootingInterval);
 
-        while (move.ReadValue<Vector2>() == Vector2.zero)
+        while (move.ReadValue<Vector2>() == Vector2.zero &&
+               EnemyManager.Instance.Alive.Count > 0)
         {
             Vector3 direction = EnemyManager.Instance.Nearest.transform.position - transform.position;
 
@@ -108,10 +109,11 @@ public class PlayerController3D : Creature
                 .SetPosition(transform.position)
                 .SetRotation(model.rotation)
                 .SetParent(Battlefield.Instance.entityParent)
+                .SetTargetTag(WeaponTarget.Enemy)
                 .Shoot(direction);
     }
 
-    public void Die()
+    public override void Die()
     {
         _animator.SetTrigger(Death);
     }

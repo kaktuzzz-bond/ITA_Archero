@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 60228aaffb4b6304b8093e19f7e5749d, type: 3}
-  m_Name: Bow
+  m_Name: Arrow
   m_EditorClassIdentifier: 
   weaponPrefab: {fileID: 3706476019748244422, guid: af36d1f2e07813e49ab12646e8292caa, type: 3}
-  id: Bow
+  id: ArrowBase
   speed: 10
-  damage: 1
+  damage: 10
   distance: 10

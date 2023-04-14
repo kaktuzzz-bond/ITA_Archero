@@ -48,6 +48,7 @@ public class Observer : Singleton<Observer>
 
     public void OnCreatureDieNotify(Enemy enemy)
     {
+        Debug.Log("Creature's dead");
         OnEnemyDie?.Invoke(enemy);
     }
 }
