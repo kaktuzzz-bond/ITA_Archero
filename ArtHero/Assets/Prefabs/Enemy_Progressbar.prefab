@@ -46,7 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthValue: {fileID: 2252321263047938815}
-  progressbar: {fileID: 7756332890550962839}
+  back: {fileID: 3953864342313453078}
+  fill: {fileID: 7756332890550962839}
 --- !u!1 &2077451663113595490
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,6 +5,8 @@ public delegate void MapGeneratedCallback(Vector3 origin, int width, int height)
 
 public delegate void PlayerCreatedCallback(Transform player);
 
+public delegate void EnemyDieCallback(Enemy enemy);
+
 public class Observer : Singleton<Observer>
 {
     public event Action OnApplicationLaunched;
@@ -12,11 +14,13 @@ public class Observer : Singleton<Observer>
     public event Action OnStartButtonClick;
 
     public event Action OnPlayerPositionChanged;
+
     public event MapGeneratedCallback OnMapGenerated;
 
     public event PlayerCreatedCallback OnPlayerCreated;
 
-    
+    public event EnemyDieCallback OnEnemyDie;
+
     public void OnMapGeneratedNotify(Vector3 origin, int width, int height)
     {
         OnMapGenerated?.Invoke(origin, width, height);
@@ -40,5 +44,10 @@ public class Observer : Singleton<Observer>
     public void OnPlayerPositionChangedNotify()
     {
         OnPlayerPositionChanged?.Invoke();
+    }
+
+    public void OnCreatureDieNotify(Enemy enemy)
+    {
+        OnEnemyDie?.Invoke(enemy);
     }
 }

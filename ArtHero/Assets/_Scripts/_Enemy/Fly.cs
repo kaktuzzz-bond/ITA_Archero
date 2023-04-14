@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Fly : MonoBehaviour
+public class Fly : Enemy
 {
-        
+  
 }

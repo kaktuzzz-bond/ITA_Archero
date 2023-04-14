@@ -1,46 +1,45 @@
 using System;
 using UnityEngine;
 
-public abstract class Enemy : MonoBehaviour
+public abstract class Enemy : Creature
 {
+    [Header("Enemy Options")]
     [SerializeField] private EnemyCard card;
 
-    [SerializeField] private Progressbar progressbar;
-    
     [SerializeField] private SpriteRenderer pointerSprite;
-    
-    private int _maxHealth;
-    
-    private int _currentHealth;
 
     private int _damage;
 
     private float _attackDistance;
 
-    private bool IsPlayerInAttackDistance 
+    private bool IsPlayerInAttackDistance
 
     {
         get
         {
-            bool isAttackDistance = 
+            bool isAttackDistance =
                     Vector3.Distance(transform.position, PlayerManager.Instance.Player.position)
-                                    <= _attackDistance;
+                    <= _attackDistance;
+
             pointerSprite.color = isAttackDistance ? Color.red : Color.cyan;
 
             return isAttackDistance;
         }
-       
     }
 
     private void Awake()
     {
         InitializeInstance();
     }
-    
 
     private void Attack(int damage)
     {
         Debug.Log($"Attack: -{damage}");
+    }
+
+    public virtual void Die()
+    {
+        Observer.Instance.OnCreatureDieNotify(this);
     }
 
     private void CheckPlayerPosition()
@@ -53,15 +52,14 @@ public abstract class Enemy : MonoBehaviour
 
     private void InitializeInstance()
     {
-        EnemyManager.Instance.Add(this);
+        Init(card.health, card.health / 2);
         
-        _maxHealth = card.health;
+        EnemyManager.Instance.Add(this);
+
         _damage = card.damage;
         _attackDistance = card.attackDistance;
-        
-        _currentHealth = _maxHealth;
-        
-        progressbar.UpdateProgressbar(_currentHealth, _maxHealth);
+
+        //progressbar.UpdateProgressbar(_currentHealth, _maxHealth);
     }
 
     #region ENABLE / DISABLE

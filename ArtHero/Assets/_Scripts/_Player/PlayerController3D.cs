@@ -1,12 +1,11 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class PlayerController3D : MonoBehaviour
+public class PlayerController3D : Creature
 {
+    [Header("Player Options")]
     [SerializeField] private float speed;
 
     [SerializeField] private float shootingInterval;
@@ -38,6 +37,8 @@ public class PlayerController3D : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
 
         _animator = model.GetComponentInChildren<Animator>();
+
+        Init(300, 250);
     }
 
     private void Start()
@@ -110,7 +111,7 @@ public class PlayerController3D : MonoBehaviour
                 .Shoot(direction);
     }
 
-    private void Die()
+    public void Die()
     {
         _animator.SetTrigger(Death);
     }

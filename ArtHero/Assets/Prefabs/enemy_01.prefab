@@ -132,8 +132,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dad381969674ab59231472a043e222c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  card: {fileID: 11400000, guid: cd36026962e094dc189b8917cad85c6e, type: 2}
   progressbar: {fileID: 5386423505986793502}
+  card: {fileID: 11400000, guid: cd36026962e094dc189b8917cad85c6e, type: 2}
   pointerSprite: {fileID: 3136246552281999727}
 --- !u!58 &765019375028175504
 CircleCollider2D:
@@ -206,6 +206,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_Progressbar
       objectReference: {fileID: 0}
+    - target: {fileID: 4881016507384733149, guid: 1827d5893602d49ed8e0a928a4171a3d, type: 3}
+      propertyPath: progressbar
+      value: 
+      objectReference: {fileID: 7122643676402820948}
     - target: {fileID: 7756332890550962839, guid: 1827d5893602d49ed8e0a928a4171a3d, type: 3}
       propertyPath: m_Size.x
       value: 3.94
@@ -228,6 +232,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500d484660724af9b98617ef26403b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!212 &7122643676402820948 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 7756332890550962839, guid: 1827d5893602d49ed8e0a928a4171a3d, type: 3}
+  m_PrefabInstance: {fileID: 683615878441610691}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7991432494081903819
 PrefabInstance:
   m_ObjectHideFlags: 0

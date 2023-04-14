@@ -46,8 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthValue: {fileID: 2252321263047938815}
-  playerHealthTest: 50
-  progressbar: {fileID: 7756332890550962839}
+  back: {fileID: 3953864342313453078}
+  fill: {fileID: 7756332890550962839}
 --- !u!1 &2077451663113595490
 GameObject:
   m_ObjectHideFlags: 0
@@ -230,7 +230,7 @@ SortingGroup:
   m_GameObject: {fileID: 2077451663113595490}
   m_Enabled: 1
   m_SortingLayerID: -1320480401
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 10
 --- !u!1 &3224608883153468696
 GameObject:
@@ -303,7 +303,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1320480401
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: fb7231ec2c6604859b74881f1d085384, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -387,7 +387,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1320480401
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 51d839ec7c46c4838b349b418754a68e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

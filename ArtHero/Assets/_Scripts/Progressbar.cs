@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -10,19 +7,17 @@ public class Progressbar : MonoBehaviour
     private TextMeshPro healthValue;
 
     [SerializeField]
-    private SpriteRenderer progressbar;
+    private SpriteRenderer back;
 
-    private float _maxProgressbarWidth;
+    [SerializeField]
+    private SpriteRenderer fill;
 
-    private void Awake()
-    {
-        _maxProgressbarWidth = progressbar.size.x;
-    }
-    
-    public void UpdateProgressbar(int healthPoints, int maxValue)
+    public void UpdateValues(int healthPoints, int maxValue)
     {
         float scaledValue = Mathf.InverseLerp(0, maxValue, healthPoints);
-        progressbar.size = new Vector2(_maxProgressbarWidth * scaledValue, 1f);
+
+        fill.size = new Vector2(back.size.x * scaledValue, 1f);
+
         healthValue.text = healthPoints.ToString();
     }
 }
