@@ -60,9 +60,7 @@ public class PlayerController3D : MonoBehaviour
         {
             Vector3 direction = context.ReadValue<Vector2>();
 
-            float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
-
-            model.rotation = Quaternion.AngleAxis(angle, Vector3.back);
+            RotateModel(direction, Vector3.back);
 
             // _rb.SetRotation(Quaternion.AngleAxis(angle, Vector3.back));
 
@@ -91,27 +89,37 @@ public class PlayerController3D : MonoBehaviour
 
         while (move.ReadValue<Vector2>() == Vector2.zero)
         {
-            MakeShot();
+            Vector3 direction = EnemyManager.Instance.Nearest.transform.position - transform.position;
+
+            RotateModel(direction, Vector3.back);
+
+            MakeShot(direction);
 
             yield return wait;
         }
     }
 
-    private void MakeShot()
+    private void MakeShot(Vector3 direction)
     {
         _animator.SetTrigger(Shoot);
 
-       PlayerManager.Instance.GetWeapon()
-               .SetPosition(transform.position)
-               .SetRotation(transform.rotation)
-               .Shoot(Vector3.up);
-
-       // должен просто бросить предмет из определенного пула
+        PlayerManager.Instance.GetWeapon()
+                .SetPosition(transform.position)
+                .SetRotation(model.rotation)
+                .SetParent(Battlefield.Instance.entityParent)
+                .Shoot(direction);
     }
 
     private void Die()
     {
         _animator.SetTrigger(Death);
+    }
+
+    private void RotateModel(Vector3 direction, Vector3 axis)
+    {
+        float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
+
+        model.rotation = Quaternion.AngleAxis(angle, Vector3.back);
     }
 
     #region - Enable / Disable -

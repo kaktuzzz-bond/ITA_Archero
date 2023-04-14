@@ -30,6 +30,12 @@ public abstract class Weapon : MonoBehaviour
         return this;
     }
     
+    public Weapon SetParent(Transform parent)
+    {
+        transform.SetParent(parent);
+
+        return this;
+    }
     public void Activate() => gameObject.SetActive(true);
 
 }

@@ -33,7 +33,7 @@ public class PlayerManager : Singleton<PlayerManager>
         {
             _currentHealth = value;
 
-            _healthValueChangedCallback.Invoke(_currentHealth, MaxPlayerHealth);
+            _healthValueChangedCallback?.Invoke(_currentHealth, MaxPlayerHealth);
         }
     }
 
@@ -58,9 +58,9 @@ public class PlayerManager : Singleton<PlayerManager>
 
     public Weapon GetWeapon()
     {
-        string cardID = weaponCard.id;
-        
         if (weaponCard == null) throw new NullReferenceException("Card is empty");
+
+        string cardID = weaponCard.id;
 
         if (_weaponPools.TryAdd(cardID, new ObjectPool<Weapon>()))
         {
@@ -72,8 +72,6 @@ public class PlayerManager : Singleton<PlayerManager>
 
     public void ReleaseWeapon(Weapon weapon)
     {
-        Debug.Log("Return to pool");
-        
         _weaponPools[weapon.card.id].Release(weapon);
     }
 

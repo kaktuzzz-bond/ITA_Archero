@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponPrefab: {fileID: 3706476019748244422, guid: af36d1f2e07813e49ab12646e8292caa, type: 3}
   id: Bow
-  speed: 50
+  speed: 10
   damage: 1
   distance: 10
