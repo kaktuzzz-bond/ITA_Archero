@@ -12,12 +12,8 @@ public class PlayerManager : Singleton<PlayerManager>
     [SerializeField] private WeaponCard weaponCard;
 
     public WeaponCard WeaponCard => weaponCard;
-    
-    public int MaxPlayerHealth { get; private set; } = 100;
-    
+
     public Transform Player { get; private set; }
-    
-  
 
     private void CreatePlayerIn(Vector3 origin, int width, int height)
     {
@@ -27,6 +23,8 @@ public class PlayerManager : Singleton<PlayerManager>
 
         Observer.Instance.OnPlayerCreatedNotify(Player);
     }
+
+    public void ChangeWeapon(WeaponCard card) => weaponCard = card;
 
     #region ENABLE / DISABLE
 

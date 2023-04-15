@@ -21,14 +21,14 @@ public abstract class Creature : MonoBehaviour
 
             if (_currentHealth <= 0)
             {
-                Observer.Instance.OnCreatureDieNotify((Enemy)this);
+                Observer.Instance.OnCreatureDieNotify(this);
             }
 
             progressbar.UpdateValues(_currentHealth, _maxHealth);
         }
     }
 
-    protected void Init(int maxHealth, int healthOnStart)
+    protected void SetupCreature(int maxHealth, int healthOnStart)
     {
         _maxHealth = maxHealth;
         CurrentHealth = healthOnStart;

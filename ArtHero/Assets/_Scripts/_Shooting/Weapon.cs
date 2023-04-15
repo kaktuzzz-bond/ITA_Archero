@@ -15,6 +15,19 @@ public abstract class Weapon : MonoBehaviour
         Rigidbody = GetComponent<Rigidbody2D>();
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (!other.transform.CompareTag(_targetTag)) return;
+
+        if (other.TryGetComponent(out Creature creature))
+
+        {
+            creature.Hit(card.damage);
+            
+            ObjectPoolManager.Instance.ReleaseWeapon(card, transform);
+        }
+    }
+
     public abstract void Shoot(Vector3 direction);
 
     public Weapon SetPosition(Vector3 position)
@@ -46,18 +59,4 @@ public abstract class Weapon : MonoBehaviour
     }
 
     protected void Activate() => gameObject.SetActive(true);
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.transform.CompareTag(_targetTag))
-        {
-            Debug.LogError("Weapon Collision");
-
-            if (other.TryGetComponent(out Creature creature))
-
-            {
-                creature.Hit(card.damage);
-            }
-        }
-    }
 }

@@ -63,12 +63,14 @@ public class UIController : Singleton<UIController>
     {
         Observer.Instance.OnApplicationLaunched += StartSplashScreen;
         Observer.Instance.OnStartButtonClick += StartGameScreen;
+        Observer.Instance.OnPlayerDead += StartPauseScreen;
     }
 
     private void OnDisable()
     {
         Observer.Instance.OnApplicationLaunched -= StartSplashScreen;
         Observer.Instance.OnStartButtonClick -= StartGameScreen;
+        Observer.Instance.OnPlayerDead -= StartPauseScreen;
     }
 
     #endregion

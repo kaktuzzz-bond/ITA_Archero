@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponPrefab: {fileID: 3706476019748244422, guid: af36d1f2e07813e49ab12646e8292caa, type: 3}
   id: ArrowBase
-  speed: 10
+  speed: 3
   damage: 10
   distance: 10

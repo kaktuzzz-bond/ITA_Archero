@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Enemy : Creature
@@ -8,10 +10,6 @@ public abstract class Enemy : Creature
 
     [SerializeField] private SpriteRenderer pointerSprite;
 
-    private int _damage;
-
-    private float _attackDistance;
-
     private bool IsPlayerInAttackDistance
 
     {
@@ -19,7 +17,7 @@ public abstract class Enemy : Creature
         {
             bool isAttackDistance =
                     Vector3.Distance(transform.position, PlayerManager.Instance.Player.position)
-                    <= _attackDistance;
+                    <= card.weaponCard.distance;
 
             pointerSprite.color = isAttackDistance ? Color.red : Color.cyan;
 
@@ -27,14 +25,30 @@ public abstract class Enemy : Creature
         }
     }
 
+    
+    private float _timer;
+
+    private bool _isAttackAllowed;
+    
     private void Awake()
     {
         InitializeInstance();
     }
 
-    private void Attack(int damage)
+    private void Attack(Vector3 direction)
     {
-        Debug.Log($"Attack: -{damage}");
+        if (!_isAttackAllowed) return;
+        
+        float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
+
+        ObjectPoolManager.Instance.GetWeapon()
+                .SetPosition(transform.position)
+                .SetRotation(Quaternion.AngleAxis(angle, Vector3.back))
+                .SetParent(Battlefield.Instance.entityParent)
+                .SetTargetTag(WeaponTarget.Player)
+                .Shoot(direction);
+
+        StartCoroutine(TimerRoutine());
     }
 
     public override void Die()
@@ -42,35 +56,50 @@ public abstract class Enemy : Creature
         Debug.LogWarning("EnemyDie");
     }
 
+    private void Update()
+    {
+        CheckPlayerPosition();
+    }
+
     private void CheckPlayerPosition()
     {
         if (IsPlayerInAttackDistance)
         {
-            Attack(_damage);
+            Vector3 playerPos = PlayerManager.Instance.Player.transform.position;
+
+            Attack(playerPos - transform.position);
         }
     }
 
     private void InitializeInstance()
     {
-        Init(card.health, card.health / 2);
+        SetupCreature(card.health, card.health);
+
+        _isAttackAllowed = true;
         
         EnemyManager.Instance.Add(this);
-
-        _damage = card.damage;
-        _attackDistance = card.attackDistance;
     }
 
-    #region ENABLE / DISABLE
-
-    private void OnEnable()
+    private IEnumerator TimerRoutine()
     {
-        Observer.Instance.OnPlayerPositionChanged += CheckPlayerPosition;
+        _isAttackAllowed = false;
+
+        yield return new WaitForSeconds(card.attackInterval);
+
+       _isAttackAllowed = true;
     }
 
-    private void OnDisable()
-    {
-        Observer.Instance.OnPlayerPositionChanged -= CheckPlayerPosition;
-    }
-
-    #endregion
+    // #region ENABLE / DISABLE
+    //
+    // private void OnEnable()
+    // {
+    //     Observer.Instance.OnPlayerPositionChanged += CheckPlayerPosition;
+    // }
+    //
+    // private void OnDisable()
+    // {
+    //     Observer.Instance.OnPlayerPositionChanged -= CheckPlayerPosition;
+    // }
+    //
+    // #endregion
 }

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Red
   m_EditorClassIdentifier: 
   id: Red
+  weaponCard: {fileID: 11400000, guid: c56b59e9da2f385498bf6c6ec43fc7ff, type: 2}
   health: 200
-  damage: 10
-  attackDistance: 10
+  attackInterval: 2

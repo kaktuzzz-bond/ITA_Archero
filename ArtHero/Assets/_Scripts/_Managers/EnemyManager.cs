@@ -12,7 +12,7 @@ public class EnemyManager : Singleton<EnemyManager>
     public Enemy Nearest => Alive
             .OrderBy((enemy) => Vector3.Distance(enemy.transform.position, PlayerManager.Instance.Player.position))
             .FirstOrDefault();
-    
+
     public void Add(Enemy enemy)
     {
         Alive ??= new List<Enemy>();
@@ -20,32 +20,29 @@ public class EnemyManager : Singleton<EnemyManager>
         Alive.Add(enemy);
     }
 
-    public void Remove(Enemy enemy)
+    private void Remove(Creature creature)
     {
+        if (creature is not Enemy enemy) return;
+
         enemy.gameObject.SetActive(false);
-        
+
         Alive.Remove(enemy);
 
         _dead ??= new List<Enemy>();
 
-        
         _dead.Add(enemy);
-        
-        
     }
-
-
 
     #region ENABLE /DISABLE
 
     private void OnEnable()
     {
-        Observer.Instance.OnEnemyDie += Remove;
+        Observer.Instance.OnCreatureDie += Remove;
     }
 
     private void OnDisable()
     {
-        Observer.Instance.OnEnemyDie -= Remove;
+        Observer.Instance.OnCreatureDie -= Remove;
     }
 
     #endregion

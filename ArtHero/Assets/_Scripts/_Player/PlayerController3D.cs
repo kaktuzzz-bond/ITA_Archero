@@ -18,6 +18,8 @@ public class PlayerController3D : Creature
 
     private Animator _animator;
 
+    private bool _isDead;
+
     #region ANIMATIONS
 
     private static readonly int Move = Animator.StringToHash("Move");
@@ -38,7 +40,7 @@ public class PlayerController3D : Creature
 
         _animator = model.GetComponentInChildren<Animator>();
 
-        Init(300, 250);
+        SetupCreature(250, 250);
     }
 
     private void Start()
@@ -48,6 +50,8 @@ public class PlayerController3D : Creature
 
     private void Moving(InputAction.CallbackContext context)
     {
+        if (_isDead) return;
+        
         _animator.SetTrigger(Move);
 
         StopAllCoroutines();
@@ -59,6 +63,8 @@ public class PlayerController3D : Creature
     {
         while (context.ReadValue<Vector2>() != Vector2.zero)
         {
+            if (_isDead) yield break;
+
             Vector3 direction = context.ReadValue<Vector2>();
 
             RotateModel(direction, Vector3.back);
@@ -67,7 +73,7 @@ public class PlayerController3D : Creature
 
             _rb.MovePosition(transform.position + direction * (speed * Time.deltaTime));
 
-            Observer.Instance.OnPlayerPositionChangedNotify();
+            //Observer.Instance.OnPlayerPositionChangedNotify();
 
             yield return null;
         }
@@ -75,6 +81,8 @@ public class PlayerController3D : Creature
 
     private void Shooting(InputAction.CallbackContext context)
     {
+        if (_isDead) return;
+
         _animator.SetTrigger(Stop);
 
         StopAllCoroutines();
@@ -91,11 +99,19 @@ public class PlayerController3D : Creature
         while (move.ReadValue<Vector2>() == Vector2.zero &&
                EnemyManager.Instance.Alive.Count > 0)
         {
-            Vector3 direction = EnemyManager.Instance.Nearest.transform.position - transform.position;
+            if (_isDead) yield break;
+            
+            Vector3 nearestEnemyPos = EnemyManager.Instance.Nearest.transform.position;
 
-            RotateModel(direction, Vector3.back);
+            Vector3 direction = nearestEnemyPos - transform.position;
 
-            MakeShot(direction);
+            if (Vector3.Distance(transform.position, nearestEnemyPos) <=
+                PlayerManager.Instance.WeaponCard.distance)
+            {
+                RotateModel(direction, Vector3.back);
+
+                MakeShot(direction);
+            }
 
             yield return wait;
         }
@@ -115,7 +131,11 @@ public class PlayerController3D : Creature
 
     public override void Die()
     {
+        if (_isDead) return;
+        
         _animator.SetTrigger(Death);
+
+        _isDead = true;
     }
 
     private void RotateModel(Vector3 direction, Vector3 axis)

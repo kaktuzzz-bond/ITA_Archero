@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Fly
   m_EditorClassIdentifier: 
   id: Fly
+  weaponCard: {fileID: 11400000, guid: c56b59e9da2f385498bf6c6ec43fc7ff, type: 2}
   health: 100
-  damage: 5
-  attackDistance: 3
+  attackInterval: 3
