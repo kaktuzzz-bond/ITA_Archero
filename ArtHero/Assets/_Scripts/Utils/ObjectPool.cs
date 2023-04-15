@@ -1,18 +1,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPool<T> where T : MonoBehaviour
+public class ObjectPool
 {
-    private Transform _prefab;
+    private readonly Transform _prefab;
 
-    private Queue<T> _queue = new();
+    private readonly Queue<Transform> _queue;
 
-    public void Init(Transform t)
+    public ObjectPool(Transform prefab)
     {
-        _prefab = t;
+        _prefab = prefab;
+        _queue = new Queue<Transform>();
     }
 
-    public T Get()
+    public Transform Get()
     {
         if (_queue.Count == 0)
         {
@@ -26,7 +27,7 @@ public class ObjectPool<T> where T : MonoBehaviour
     {
         for (int i = 0; i < count; i++)
         {
-            Object.Instantiate(_prefab).TryGetComponent(out T obj);
+            Transform obj = Object.Instantiate(_prefab);
 
             obj.gameObject.SetActive(false);
 
@@ -34,7 +35,7 @@ public class ObjectPool<T> where T : MonoBehaviour
         }
     }
 
-    public void Release(T obj)
+    public void Release(Transform obj)
     {
         obj.gameObject.SetActive(false);
 

@@ -47,6 +47,6 @@ public class Arrow : Weapon
             yield return null;
         }
         
-        PlayerManager.Instance.ReleaseWeapon(this);
+        ObjectPoolManager.Instance.ReleaseWeapon(card, transform);
     }
 }
