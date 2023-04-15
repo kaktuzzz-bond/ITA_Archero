@@ -6,16 +6,16 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
 {
     private readonly Dictionary<WeaponCard, ObjectPool> _weaponPools = new();
 
-    public Weapon GetWeapon()
+    public Weapon GetWeapon(WeaponCard key)
     {
-        WeaponCard card = PlayerManager.Instance.WeaponCard;
+        // WeaponCard card = PlayerManager.Instance.WeaponCard;
 
-        if (!_weaponPools.ContainsKey(card))
+        if (!_weaponPools.ContainsKey(key))
         {
-            _weaponPools.Add(card, new ObjectPool(card.weaponPrefab));
+            _weaponPools.Add(key, new ObjectPool(key.weaponPrefab));
         }
 
-        return _weaponPools[card].Get().GetComponent<Weapon>();
+        return _weaponPools[key].Get().GetComponent<Weapon>();
     }
 
     public void ReleaseWeapon(WeaponCard card, Transform obj)

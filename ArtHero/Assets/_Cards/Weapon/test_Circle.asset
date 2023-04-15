@@ -9,10 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0c9235af2a14fb994ac4e9e4a3be493, type: 3}
-  m_Name: Fly
+  m_Script: {fileID: 11500000, guid: 60228aaffb4b6304b8093e19f7e5749d, type: 3}
+  m_Name: test_Circle
   m_EditorClassIdentifier: 
-  id: Fly
-  weaponCard: {fileID: 11400000, guid: e24a1b90fba174f86810b26cefe61848, type: 2}
-  health: 100
-  attackInterval: 3
+  weaponPrefab: {fileID: 3706476019748244422, guid: 6fa959e1165a347e6a7dc7728f13ed77, type: 3}
+  id: Circle
+  speed: 3
+  damage: 50
+  distance: 5

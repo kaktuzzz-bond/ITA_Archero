@@ -121,7 +121,7 @@ public class PlayerController3D : Creature
     {
         _animator.SetTrigger(Shoot);
 
-        ObjectPoolManager.Instance.GetWeapon()
+        ObjectPoolManager.Instance.GetWeapon(PlayerManager.Instance.WeaponCard)
                 .SetPosition(transform.position)
                 .SetRotation(model.rotation)
                 .SetParent(Battlefield.Instance.entityParent)

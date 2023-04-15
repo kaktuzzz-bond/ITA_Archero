@@ -41,7 +41,7 @@ public abstract class Enemy : Creature
         
         float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
 
-        ObjectPoolManager.Instance.GetWeapon()
+        ObjectPoolManager.Instance.GetWeapon(card.weaponCard)
                 .SetPosition(transform.position)
                 .SetRotation(Quaternion.AngleAxis(angle, Vector3.back))
                 .SetParent(Battlefield.Instance.entityParent)
