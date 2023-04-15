@@ -15,7 +15,7 @@ public class Arrow : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Field")
+        if (collision.gameObject.tag == "Untagged")
         {            
             //Destroy(this.gameObject);
             PoolManager.Instance.Push(this.gameObject.transform);

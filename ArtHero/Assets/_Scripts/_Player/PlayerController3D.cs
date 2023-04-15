@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -99,20 +100,34 @@ public class PlayerController3D : MonoBehaviour
         }
     }
 
+    public Transform target;
+
+    private void OnDrawGizmos()
+    {
+        if(target == null)
+        {
+            return;
+        }
+        else
+        {
+            Gizmos.DrawSphere(target.position, 1);
+        }
+    }
+
     private void MakeShot()
     {
         _animator.SetTrigger(Shoot);
 
-        var target = Aiming.Aim(_rb, weaponCard, 1 << LayerMask.NameToLayer("Enemy"));
+        target = Aiming.Aim(_rb, weaponCard, 1 << LayerMask.NameToLayer("Default"));
 
         if (target != null)
         {
-            float angle = Vector2.Angle(_rb.position, new Vector2(target.position.x, target.position.y));
+            Vector2 direction = target.position - transform.position;
+            float angle = MathF.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
 
-            Debug.Log("_rb.position " + _rb.position);
-            Debug.Log("target.position " + target.position);
+            Debug.Log("angle - " + angle);
+
             model.rotation = Quaternion.AngleAxis(angle, Vector3.back);
-            Debug.Log("angle " + angle);
         }
 
         weaponCard.Shoot(this.transform, model.rotation);

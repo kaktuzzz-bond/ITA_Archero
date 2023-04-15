@@ -14,10 +14,10 @@ public class Aiming : MonoBehaviour
 
             result = collider.gameObject.transform;
 
-            //Vector2 enemyPosition = collider.transform.position;
-            //Vector2 enemyDirection = enemyPosition - rigidbody2d.position;
+            Vector2 enemyPosition = collider.transform.position;
+            Vector2 enemyDirection = enemyPosition - rigidbody2d.position;
 
-            ////raycasr
+            //raycast
             //RaycastHit2D hit;
             //Physics2D.Raycast(rigidbody2d.position, enemyDirection, LayerMask.NameToLayer("Wall"),);
             //if (!target)
